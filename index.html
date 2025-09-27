@@ -1,1 +1,362 @@
-<!DOCTYPE html> <html lang="id"> <head> <meta charset="UTF-8"> <title>Embed Google Apps Script</title> <style> body { margin: 0; padding: 0; } iframe { border: none; width: 100%; height: 100vh; /* supaya penuh setinggi layar */ } </style> </head> <body> <iframe src="https://script.google.com/a/macros/guru.sd.belajar.id/s/AKfycbykhfd8GkRJ5W87_6NcWHsGjItTeTRiDaCl0lsnT75LiZTWNTcn7PgCcKUqqmk_Ccl3/exec?page=input" scrolling="no"> </iframe> </body> </html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard SAB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: inherit;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #ffffff 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background decoration */
+        .bg-decoration {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .bg-decoration-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200px;
+            height: 200px;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2;
+        }
+
+        .header-icon {
+            font-size: 3rem;
+            color: #10b981;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            flex: 1;
+            align-content: center;
+        }
+
+        @media (min-width: 768px) {
+            .menu-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2.5rem;
+            }
+        }
+
+        /* Menu Cards */
+        .menu-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .menu-card:hover::before {
+            left: 100%;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #10b981;
+        }
+
+        .menu-card.bounce:hover {
+            animation: bounceHover 0.6s ease-in-out;
+        }
+
+        .menu-card.pulse:hover {
+            animation: pulseHover 0.6s ease-in-out;
+        }
+
+        .menu-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .menu-card:hover .menu-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .menu-card:nth-child(1) .menu-icon {
+            color: #3b82f6;
+        }
+
+        .menu-card:nth-child(2) .menu-icon {
+            color: #10b981;
+        }
+
+        .menu-card:nth-child(3) .menu-icon {
+            color: #f59e0b;
+        }
+
+        .menu-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes bounceHover {
+            0%, 100% {
+                transform: translateY(-10px) scale(1.02);
+            }
+            50% {
+                transform: translateY(-20px) scale(1.05);
+            }
+        }
+
+        @keyframes pulseHover {
+            0%, 100% {
+                transform: translateY(-10px) scale(1.02);
+            }
+            50% {
+                transform: translateY(-10px) scale(1.08);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .fade-in-up:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .fade-in-up:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .fade-in-up:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 767px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .header-icon {
+                font-size: 2.5rem;
+            }
+            
+            .menu-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .menu-icon {
+                font-size: 3rem;
+            }
+            
+            .container {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Decorations -->
+    <svg class="bg-decoration" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#10b981" d="M44.7,-76.4C58.8,-69.2,71.8,-59.1,79.6,-45.8C87.4,-32.6,90,-16.3,88.5,-0.9C87,14.5,81.4,29,72.8,41.9C64.2,54.8,52.6,66.1,38.8,73.9C25,81.7,9,86,−7.1,86.1C−23.2,86.2,−46.4,82.1,−63.2,71.8C−80,61.5,−90.4,45,−94.6,26.8C−98.8,8.6,−96.8,-11.3,−89.7,-28.4C−82.6,-45.5,−70.4,-59.8,−55.8,-66.8C−41.2,-73.8,−24.2,-73.5,−7.8,-73.9C8.6,-74.3,30.6,-83.6,44.7,-76.4Z" transform="translate(100 100)" />
+    </svg>
+    
+    <svg class="bg-decoration-bottom" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#3b82f6" d="M37.8,-65.1C49.8,-58.2,60.5,-47.4,66.8,-34.1C73.1,-20.8,75,-5.9,73.2,8.2C71.4,22.3,65.9,35.6,57.1,46.8C48.3,58,36.2,67.1,22.8,72.4C9.4,77.7,-5.3,79.2,-19.2,76.1C−33.1,73,−46.2,65.3,−55.8,54.4C−65.4,43.5,−71.5,29.4,−73.8,14.6C−76.1,-0.2,−74.6,-15.7,−69.4,-29.4C−64.2,-43.1,−55.3,-55,−44.2,-62.2C−33.1,-69.4,−19.8,-71.9,−6.1,-72.8C7.6,-73.7,25.8,-72,37.8,-65.1Z" transform="translate(100 100)" />
+    </svg>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-icon">
+                <i class="fas fa-tint"></i>
+            </div>
+            <h1>Halaman Sistem Informasi SAB SIMACAN</h1>
+            <p style="color: white; font-size: 1.1rem; margin-top: 1rem; opacity: 0.9; font-weight: 300;">
+                Aplikasi Informasi Layanan Air Bersih Dukuh Simacan Desa Kecepit
+            </p>
+        </header>
+
+        <!-- Menu Grid -->
+        <main class="menu-grid">
+            <a href="pengguna.html" class="menu-card fade-in-up">
+                <div class="menu-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h2 class="menu-title">Pengguna</h2>
+                <p class="menu-description">Informasi pengguna SAB Simacan</p>
+            </a>
+
+            <a href="rekap.html" class="menu-card bounce fade-in-up">
+                <div class="menu-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h2 class="menu-title">Rekap</h2>
+                <p class="menu-description">Lihat laporan dan rekapitulasi data secara komprehensif</p>
+            </a>
+
+            <a href="keuangan.html" class="menu-card pulse fade-in-up">
+                <div class="menu-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <h2 class="menu-title">Kas</h2>
+                <p class="menu-description">Informasi Seputar Kas SAB Simacan</p>
+            </a>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; Sistem Informasi SAB Simacan</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add entrance animations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.fade-in-up');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                }, index * 200);
+            });
+        });
+
+        // Add subtle parallax effect to background decorations
+        document.addEventListener('mousemove', function(e) {
+            const decoration = document.querySelector('.bg-decoration');
+            const decorationBottom = document.querySelector('.bg-decoration-bottom');
+            
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            decoration.style.transform = `translate(${x * 20}px, ${y * 20}px)`;
+            decorationBottom.style.transform = `translate(${-x * 15}px, ${-y * 15}px)`;
+        });
+    </script>
+</body>
+</html>
